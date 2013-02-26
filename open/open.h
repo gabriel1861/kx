@@ -15,7 +15,7 @@
 
 const static QString URLFRONT = "http://10.168.200.1/mov/";
 const static QString URLBACK = "/url.xml";
-const static QString FILEPATH = "./url.xml";
+const static QString FILEPATH = "../url.xml";
 const static QString BASEFILEPATH("../Total.xml");
 
 class open: public QObject

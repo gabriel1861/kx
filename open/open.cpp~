@@ -32,7 +32,7 @@ QString open::GeturlPath(QString filename)
 		{
 			if(filereader.name() == "a")
 			{
-				if(filereader.readElementText() == filename)
+				if(filereader.readElementText() == "南家三姐妹")
 				{
 					filereader.readNext();							
 					QString path = filereader.readElementText();	
