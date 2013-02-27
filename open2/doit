@@ -1,7 +1,0 @@
- #!/bin/sh
-qmake -project
-qmake 
-sed '$aQT+=network' -i *.pro
-#sed '$aQT+=sql' -i *.pro
-sed '$aQT += xml' -i *.pro
-sed '$aQT += gui' -i *.pro
