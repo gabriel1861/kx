@@ -1,0 +1,27 @@
+#!/bin/sh
+
+if [ "$1"x == 'inquiry'x ]; then
+pushd ./inquiry
+	./inquiry a | grep $2	
+popd
+
+elif [ "$1"x == 'init'x ]; then
+	pushd ./init
+		./init
+		sed -i 's/gb2312/utf-8/g' ../Total.xml
+	popd
+
+elif [ "$1"x == 'open'x ];then
+	pushd ./open
+		./open $2
+		sed -i 's/gb2312/utf-8/g' ../url.xml 
+	popd
+elif [ "$1"x == 'play'x ];then
+	pushd ./play
+		./play | xargs mplayer
+	popd
+else 
+	echo "what the hell going on.."
+fi;
+
+
