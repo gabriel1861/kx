@@ -1,91 +1,59 @@
 #include "open.h"
 
+xmldealerex::xmldealerex()
+{}
+
+xmldealerex::~xmldealerex()
+{}
+
+bool xmldealerex::deal(QString tag,QString context)
+{
+	if(filereader.name() == "a")
+	{
+		if(filereader.readElementText() == context)
+		{
+			filereader.readNext();										
+			result<<filereader.readElementText();
+			qDebug()<<result.size();
+			return false;
+		}
+	}	
+	return true;
+}
+
+
 open::open()
 {
-	netmanager = new QNetworkAccessManager(this);
-	SetBaseFile(BASEFILEPATH);
+	file = new xmldealerex();
+	net = new networkdealer();
+	connect(net,SIGNAL(done()),this,SLOT(end()));
 }
 
 open::~open()
 {
-	delete netmanager;
+	delete file;
+	delete net;
 }
 
-void open::openfile(QString filename)
+
+
+QStringList open::find(QString context)
 {
-	GeturlFile(filename);
-}
-void open::GeturlFile(QString filename)
-{
-    connect(netmanager,SIGNAL(finished(QNetworkReply*)),this,SLOT(reply(QNetworkReply*)));	
-     QString urlpath = GeturlPath(filename);
-    netmanager->get(QNetworkRequest(urlpath));	
+	return file->find("",context);
 }
 
-QString open::GeturlPath(QString filename)
+
+void open::geturlxml(QString context,QString path)
 {
-	while(!filereader.atEnd())
-	{
-		filereader.readNext();
-		if(filereader.isStartElement())
-		{
-			if(filereader.name() == "a")
-			{
-				if(filereader.readElementText() == filename)
-				{
-					filereader.readNext();							
-					QString path = filereader.readElementText();
-					return URLFRONT + path + URLBACK;
-				}
-			}
-		}
-		else if(filereader.hasError())
-		{
-			qDebug()<<"xml read error:"<<filereader.errorString();
-			return "";
-		}	
-		else if(filereader.atEnd())
-		{
-			qDebug()<<"xml read done";
-			return "";
-		}
-	}
-	return "";
+	net->run(context,path);
 }
 
-//============
-//change the file for utp to gb18030
-//============
-void open::reply(QNetworkReply* r)                                      
-{     
-	qDebug()<<"sever reply ok";
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");	
-	QFile xf(FILEPATH);
-	if(!xf.open(QIODevice::WriteOnly))
-	{
-		qDebug()<<"open url.xml failed";
-		qApp->exit();
-	}	
-	QTextStream xfstream(&xf);
-	QString tmp;
-	
-	//r->readLine();
-	//xfstream <<"?xml version='1.0' encoding='utf-8'?><root>"<<endl;
-	//xfstream << "<root><b>";
-	while(!r->atEnd())
-	{
-		tmp = codec->toUnicode(r->readLine());
-		xfstream<<tmp;
-	}
-	xf.close();
+void open::setbasefile(QString path)
+{
+	file->SetBaseFile(path);
+}
+
+void open::end()
+{
 	qApp->exit();
 }
-
-void open::SetBaseFile(const QString s)
-{
-	basefile.setFileName(s);
-	if(!basefile.open(QFile::ReadOnly))
-		qDebug()<<"open basefile failed.";
-	filereader.setDevice(&basefile);
-}
-

@@ -2,41 +2,20 @@
 
 init::init()
 {
-	netmanager = new QNetworkAccessManager(this);
+	net = new networkdealer();
+	connect(net,SIGNAL(done()),this,SLOT(end()));
 }
+
 init::~init()
 {
-	delete netmanager;
+	delete net;
 }
-
-void init::run()
+void init::geturl(QString _url,QString _savepath)
 {
-    connect(netmanager,SIGNAL(finished(QNetworkReply*)),this,SLOT(reply(QNetworkReply*)));
-    netmanager->get(QNetworkRequest(TAERGET));	
+	net->run(_url,_savepath);
 }
 
-
-//============
-//change the file for utp to gb18030
-//============
-void init::reply(QNetworkReply* r)                                      
-{     
-	qDebug()<<"sever reply ok";
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");	
-	QFile xf(FILEPATH);
-	if(!xf.open(QIODevice::WriteOnly))
-	{
-		qDebug()<<"open Tatal.xml failed";
-		qApp->exit();
-	}	
-	QTextStream xfstream(&xf);
-	QString tmp;
-	
-	while(!r->atEnd())
-	{
-		tmp = codec->toUnicode(r->readLine());
-		xfstream<<tmp;
-	}
-	xf.close();
+void init::end()
+{
 	qApp->exit();
 }

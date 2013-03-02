@@ -10,19 +10,17 @@
 #include <QXmlStreamReader>
 #include <QDebug>
 #include <iostream>
-const static QString FILEPATH("../Total.xml");
+#include "../xmldealer/xmldealer.h"
 
-class inquriy
+class inquriy:public xmldealer
 {
 public:
 	inquriy();
+	~inquriy();
+	QStringList find(QString tag);
 
-public: 
-	void find(QString tag);
-private:
-	QFile basefile;
-	QXmlStreamReader filereader;
-	void SetBaseFile(QString);
+private: 
+	virtual bool deal(QString tag,QString context);
 };
 
 #endif

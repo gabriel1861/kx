@@ -1,34 +1,22 @@
 #include "inquiry.h"
 
-inquriy::inquriy()
+inquriy::inquriy():xmldealer()
+{}
+
+inquriy::~inquriy()
+{}
+//覆盖父类的find 减少 传入参数
+QStringList inquriy::find(QString tag)
 {
-	SetBaseFile(FILEPATH);
+	return xmldealer::find(tag,"");
 }
 
-void inquriy::SetBaseFile(const QString s)
+//覆盖父类虚函数deal（）
+bool inquriy::deal(QString tag,QString context)
 {
-	basefile.setFileName(s);
-	if(!basefile.open(QFile::ReadOnly))
-		qDebug()<<"open basefile failed.";
-	filereader.setDevice(&basefile);
-}
-
-void inquriy::find(QString tag)
-{
-	while(!filereader.atEnd())
+	if(filereader.name() == tag) 
 	{
-		filereader.readNext();
-		if(filereader.isStartElement())
-		{
-			if(filereader.name() == tag)std::cout << filereader.readElementText().toStdString() << std::endl;
-		}
-		else if(filereader.hasError())
-		{
-			qDebug()<<"xml read error:"<<filereader.errorString();
-		}	
-		else if(filereader.atEnd())
-		{
-			qDebug()<<"xml read done";
-		}
+		result << filereader.readElementText();
 	}
+	return true;
 }

@@ -3,45 +3,20 @@
 //all the movie information in it 	//
 //**********************************//
 
+
+
+#include <QApplication>
 #include "init.h"
+
+const static QString UCL("http://10.168.200.1/mov/xml/Total.xml");
+const static QString FILEPATH("../Total.xml");
+
 int main(int argc,char* argv[])
 {
-	printf("kx ^_^...\n");
+	qDebug()<<"kx ^_^...";
 	QApplication a(argc,argv);
 	init i;
-	i.run();
-	printf("gettotal ok\n");
-	return a.exec();	
-	//store x;
-	//qDebug()<<x.init()<<endl;
-	//qDebug()<<x.SetFile("all.xml")<<endl;
-	//qDebug()<<x.built()<<endl;
-	
-	//qApp->exit();
-
-	//while(!r->atEnd())
-      //  xfstream << codec->toUnicode(r->readLine());
-    	//xf.close();
-    	//qDebug()<<tmp;
-	//QXmlStreamReader socx(tmp);
-	//socx.setDevice(&tmp);
-	//while(!socx.atEnd())
-	//{	
-	//	socx.readNext();
-	//	if(socx.isStartElement())
-	//	{
-	//		if(socx.name() == "b")
-	//			qDebug()<<socx.readElementText();
-	//	}		                
-	//	else if(socx.hasError())
-        //	{
-      //                  qDebug()<<"xml read error:"<<socx.errorString()<<endl;
-        //        }
-      //          else if(socx.atEnd())
-        //        {
-      //                  qDebug()<<"xml read done"<<endl;
-        //        }
-	//}
-       // qApp->exit();
-	//return 0;
+	i.geturl(UCL,FILEPATH);
+	qDebug()<<"get total ok.";
+	return a.exec();
 }

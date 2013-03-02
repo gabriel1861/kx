@@ -13,10 +13,20 @@
 #include <QDebug>
 #include <iostream>
 
-const static QString URLFRONT = "http://10.168.200.1/mov/";
-const static QString URLBACK = "/url.xml";
-const static QString FILEPATH = "../url.xml";
-const static QString BASEFILEPATH("../Total.xml");
+#include "../networkdealer/networkdealer.h"
+#include "../xmldealer/xmldealer.h"
+
+
+
+class xmldealerex:public xmldealer
+{
+public:
+	xmldealerex();
+	~xmldealerex();
+private: 
+	virtual bool deal(QString tag,QString context);
+};
+
 
 class open: public QObject
 {
@@ -24,19 +34,16 @@ class open: public QObject
 public:
 	open();
 	~open();
-public:
-	void openfile(QString);
-	
+
+	void geturlxml(QString context,QString path);
+	void setbasefile(QString path);	
+	QStringList find(QString context);
+
+private:
+	xmldealerex *file;
+	networkdealer *net;
 
 private slots:
-	void reply(QNetworkReply* r);
-private:
-	QNetworkAccessManager *netmanager;
-	QString GeturlPath(QString);
-	void GeturlFile(QString);
-
-	QFile basefile;
-	QXmlStreamReader filereader;
-	void SetBaseFile(QString);
+	void end();
 };
 #endif

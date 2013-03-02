@@ -18,12 +18,8 @@ elif [ "$1"x == 'open'x ];then
 	popd
 elif [ "$1"x == 'play'x ];then
 	pushd ./play
-		./play
+		./play | xargs mplayer
 		sed -i 's/gb2312/utf-8/g' ../info.xml 
-	popd
-elif [ "$1"x == 'play2'x ];then
-	pushd ./play2
-		./play2 | xargs mplayer
 	popd
 else 
 	echo "what the hell going on.."

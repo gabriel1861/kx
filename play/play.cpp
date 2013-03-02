@@ -1,45 +1,55 @@
 #include "play.h"
+xmldealerex::xmldealerex()
+{}
+
+xmldealerex::~xmldealerex()
+{}
+	
+bool xmldealerex::deal(QString tag,QString context)
+{
+	qDebug()<<"new deal was called";
+	if(filereader.name() == "b")
+	{		
+		result<<filereader.readElementText();
+		return false;
+	}
+	return true;
+}
+
 
 play::play()
 {
-	SetBaseFile(FILEPATH);
+	file = new xmldealerex();
+	net = new networkdealer();
+	connect(net,SIGNAL(done()),this,SLOT(end()));
 }
 
 play::~play()
-{}
-
-QString play::geturl(int pos)
 {
-	while(!filereader.atEnd())
-	{
-		filereader.readNext();
-		if(filereader.isStartElement())
-		{
-			if(filereader.name() == "b")
-			{
-				QString code = filereader.readElementText().split(",").at(pos);
-				code.remove(QChar('\n'), Qt::CaseInsensitive);
-				return URLFRONT + code + URLBACK;
-			}
-		}
-		else if(filereader.hasError())
-		{
-			qDebug()<<"xml read error:"<<filereader.errorString();
-			return "";
-		}	
-		else if(filereader.atEnd())
-		{
-			qDebug()<<"xml read done";
-			return "";
-		}
-	}
-	return "";
+	delete file;
+	delete net;
+}
+	
+
+void play::setbasefile(QString path)
+{
+	file->SetBaseFile(path);
 }
 
-void play::SetBaseFile(const QString s)
+
+QStringList play::find()
 {
-	basefile.setFileName(s);
-	if(!basefile.open(QFile::ReadOnly))
-		qDebug()<<"open basefile failed.";
-	filereader.setDevice(&basefile);
+	return file->find("","");
+}
+
+void play::end()
+{
+	qDebug()<<"end was called";
+	qApp->exit();
+}
+
+void play::geturlxml(QString context,QString path)
+{
+	qDebug()<<"geturlxml was called.";
+	net->run(context,path);
 }

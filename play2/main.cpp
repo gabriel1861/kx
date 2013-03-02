@@ -3,33 +3,39 @@
 //得到电影路径			//
 //*************************//
 
-#include "open.h"
+#include "play2.h"
 #include <QtGui/QApplication>
 #include <QTextCodec>
 #include <QStringList>
-const static QString URLFRONT = "http://10.168.200.1/mov/";
-const static QString URLBACK = "/url.xml";
-const static QString FILEPATH = "../url.xml";
-const static QString BASEFILEPATH = "../Total.xml";
+
+const static QString BASEFILEPATH = "../info.xml";
+const static QString FORNTPATH = "http://10.168.200.1/";
 
 int main(int argc,char* argv[])
 {
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 	printf("kx ^_^...\n");
 	QApplication a(argc,argv);
-	open o;
+	play2 o;
 	o.setbasefile(BASEFILEPATH);
-	QStringList r = o.find(argv[1]);
 	
+	QStringList r = o.find();
 	if(r.size() != 1)
 	{
 		qDebug()<<r.size();
 		qDebug()<<"find failed.";
 		qApp->exit();
 	}
-	o.geturlxml(URLFRONT + r.at(0) + URLBACK,FILEPATH);
-	printf("geturl ok\n");
-	return a.exec();	
+	
+	qDebug()<<r.at(0);
+	QStringList list = r.at(0).split("/");
+	for(int i = 0;i < list.size();i ++)
+	{
+		qDebug()<<list.at(i);
+	} 
+	QString finalpath = FORNTPATH + list.at(3) + "/" + list.at(4);
+	std::cout<<finalpath.toStdString()<<std::endl;
+	return 0;	
 }
 
 
