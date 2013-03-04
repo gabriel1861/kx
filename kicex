@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+
+Totalxml="/home/axlecho/workplace/github/kx/Total.xml"
+Uclxml="/home/axlecho/workplace/github/kx/url.xml"
+Infoxml="/home/axlecho/workplace/github/kx/info.xml"
 
 if [ "$1"x == 'inquiry'x ]; then
 pushd ./inquiry
@@ -12,19 +16,35 @@ elif [ "$1"x == 'init'x ]; then
 	popd
 
 elif [ "$1"x == 'open'x ];then
+
+	if [ -f  "$Totalxml" ];then
 	pushd ./open
 		./open $2
 		sed -i 's/gb2312/utf-8/g' ../url.xml 
 	popd
-elif [ "$1"x == 'play'x ];then
+	else
+		echo "open Totalxml failed."
+		return;
+	fi;
+	
+	if [ -f  "$Uclxml" ]; then  
 	pushd ./play
 		./play
 		sed -i 's/gb2312/utf-8/g' ../info.xml 
 	popd
-elif [ "$1"x == 'play2'x ];then
+	else
+		echo "open Uclxml failed"
+		return;
+	fi;
+
+	if [ -f "$Infoxml" ]; then  
 	pushd ./play2
 		./play2 | xargs mplayer
 	popd
+	else
+		echo "open Infoxml failed"
+		return;
+	fi;
 else 
 	echo "what the hell going on.."
 fi;
