@@ -7,7 +7,7 @@ xmldealerex::~xmldealerex()
 	
 bool xmldealerex::deal(QString tag,QString context)
 {
-	qDebug()<<"new deal was called";
+	//qDebug()<<"new deal was called";
 	if(filereader.name() == "b")
 	{		
 		result<<filereader.readElementText();
@@ -44,7 +44,6 @@ QStringList play::find()
 
 void play::end()
 {
-	qDebug()<<"end was called";
 	qApp->exit();
 }
 

@@ -17,7 +17,8 @@ QStringList xmldealer::find(QString tag,QString context)
 		filereader.readNext();
 		if(filereader.isStartElement())
 		{
-			if(!deal(tag,context)) 
+			//if deal return false the matter done.
+			if(deal(tag,context) == false) 
 				return result;
 		}
 		else if(filereader.hasError())

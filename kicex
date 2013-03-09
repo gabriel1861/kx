@@ -5,45 +5,52 @@ Uclxml="/home/axlecho/workplace/github/kx/url.xml"
 Infoxml="/home/axlecho/workplace/github/kx/info.xml"
 
 if [ "$1"x == 'inquiry'x ]; then
-pushd ./inquiry
+pushd ./inquiry 1>/dev/null
 	./inquiry a | grep $2	
-popd
+popd 1>/dev/null
 
 elif [ "$1"x == 'init'x ]; then
-	pushd ./init
+	pushd ./init 1>/dev/null
 		./init
 		sed -i 's/gb2312/utf-8/g' ../Total.xml
-	popd
+	popd 1>/dev/null
 
 elif [ "$1"x == 'open'x ];then
-
 	if [ -f  "$Totalxml" ];then
-	pushd ./open
+	pushd ./open 1>/dev/null
 		./open $2
 		sed -i 's/gb2312/utf-8/g' ../url.xml 
-	popd
+	popd 1>/dev/null
 	else
 		echo "open Totalxml failed."
-		return;
+		exit 0
 	fi;
-	
+
+elif [ "$1"x == 'play'x ];then
 	if [ -f  "$Uclxml" ]; then  
-	pushd ./play
-		./play
+	pushd ./play 1>/dev/null
+
+		if [ "$#"x == "1"x ];then
+			./play "0"
+		else 
+			./play $2
+		fi;
+
 		sed -i 's/gb2312/utf-8/g' ../info.xml 
-	popd
+	popd 1>/dev/null
 	else
 		echo "open Uclxml failed"
-		return;
+		exit 0
 	fi;
 
 	if [ -f "$Infoxml" ]; then  
-	pushd ./play2
-		./play2 | xargs mplayer
-	popd
+	pushd ./play2 1>/dev/null
+		./play2 | xargs kmplayer
+	popd 1>/dev/null
+	
 	else
 		echo "open Infoxml failed"
-		return;
+		exit 0
 	fi;
 else 
 	echo "what the hell going on.."
