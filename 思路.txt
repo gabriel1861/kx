@@ -1,20 +1,42 @@
-7A706C61792E636166657374762E6E6574 	e	
-68642E6D6F766F682E636E			f
-						g
-??
+1.不需要认证
+2.每一部电影信息都放在total 但不是播放地址
 
-http://10.168.200.1/kuuf/687474703A2F2F6D372E6E65746B75752E636F6D2F64792F64617368616E676861692F312E6D6B76.mkv
-http://10.168.200.1/kuue/687474703a2f2f6d372e6e65746b75752e636f6d2f64792f64617368616e676861692f312e6d6b76.mkv
-
-http://10.168.200.1/kuue/687474703A2F2F6D382E6E65746B75752E636F6D2F652F7A792F313931306861657262696E646177656E79692F312E6D6B76.mkv
-
-http://10.168.200.1/kuug/687474703A2F2F6D372E6E65746B75752E636F6D2F64792F6261646261797465676F6E672F312E726D7662.mkv
-
-http://10.168.200.1/return.asp?info=687474703A2F2F68642E6D6F766F682E636E2F6864332F6865696D6177616E677A692F312E6D6B76
-http://netkuu.ku6.com/return.asp?info=687474703A2F2F6D382E6E65746B75752E636F6D2F672F7A792F786966616E67616971696E677A68657875652F30312E6D6B76
+3.组合我用例子来讲吧
+<film><a>至暗之时</a><b>687474703A2F2F6D382E6E65746B75752E636F6D2F642F64792F7A68696865697A68697368692F312E6D6B76</b><c>克里斯·戈拉克</c><d>埃米尔·赫斯基,瑞切尔·泰勒,奥莉薇·瑟尔比,乔尔·金纳曼</d><e>科幻</e><f>欧美</f><g>电影</g><h>1</h><r>http://netkuu.ku6.com</r><s> 恐怖外星人猎杀人类，幸存者反戈一击</s><t>2013-3-10 14:40:52</t><u>95</u><v>2011-12-25</v><w></w><x>0</x><z>1</z><ry>0</ry><lg>0</lg><hr>0</hr><rb>0</rb><rt>0</rt><dsj>0</dsj><fz>0</fz><bh>0</bh><juj>0</juj><yg>3</yg><gqdsj>0</gqdsj><jjty>0</jjty><xx>2</xx></film>
 
 
-total.xml -> inquiry ->  url.xml -> list -> information
-				查询字段				名字					序号								
-init         ->          inquiry         ->         	open             ->            play 				-> 			play2
-total.xml			名字      				total.xml + 名字 = url.xml 	url.xml -> info.xml				info.xml -> 链结
+1.首先是total.xml里的<b>标签687474703A2F2F6D382E6E65746B75752E636F6D2F642F64792F7A68696865697A68697368692F312E6D6B76
+
+
+组合成
+http://10.168.200.1/mov/687474703A2F2F6D382E6E65746B75752E636F6D2F642F64792F7A68696865697A68697368692F312E6D6B76/url.xml
+
+获取url.xml url.xml有影片信息 可能有多部
+
+2.获取得到到url.xml
+<?xml version='1.0' encoding='gb2312'?><root><a>至暗之时</a><b>
+687474703A2F2F6D382E6E65746B75752E636F6D2F642F64792F7A68696865697A68697368692F312E6D6B76,
+</b></root>
+
+组合成
+http://10.168.200.1/return.asp?info=687474703A2F2F6D382E6E65746B75752E636F6D2F642F64792F7A68696865697A68697368692F312E6D6B76
+
+
+3.获取info.xml(将其中的bar.netkuu.com:80 替换成10.168.200.1)
+<?xml version='1.0' encoding='gb2312'?>
+<root>
+ <url>
+http://bar.netkuu.com:80/kuuF/687474703A2F2F6D382E6E65746B75752E636F6D2F642F64792F7A68696865697A68697368692F312E6D6B76.mkv
+ </url>
+</root>
+
+4.可以用到网址
+http://10.168.200.1/kuuF/687474703A2F2F6D382E6E65746B75752E636F6D2F642F64792F7A68696865697A68697368692F312E6D6B76.mkv
+
+
+编译
+在每个文件夹里有doit的脚本
+
+
+直接运行程序出来到链接不能直接用 
+kicex脚本里对各个xml进行了修改（主要是改了编码）
